@@ -5,3 +5,75 @@ date: "2026-04-10"
 output: pdf_document
 ---
 
+```{r}
+rm(list = ls())
+```
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+deaths <- read_csv("Data/no_of_deaths_by_country_clean.csv")
+hiv <- read_csv("Data/no_of_people_living_with_hiv_by_country_clean.csv")
+art <- read_csv("Data/art_coverage_by_country_clean.csv")
+```
+
+```{r}
+deaths_clean <- deaths |>
+  clean_names() |>
+  group_by(country) |>
+  summarise(
+    deaths = first(count_median),
+    .groups = "drop"
+  )
+
+```
+
+```{r}
+hiv_clean <- hiv |>
+  clean_names() |>
+  group_by(country) |>
+  summarise(
+    hiv_population = first(count_median),
+    .groups = "drop"
+  )
+```
+
+```{r}
+art_clean <- art |>
+  clean_names() |>
+  select(
+    country,
+    art_coverage = estimated_art_coverage_among_people_living_with_hiv_percent_median
+  )
+
+```
+
+```{r}
+final_df <- deaths_clean |>
+  inner_join(hiv_clean, by = "country") |>
+  inner_join(art_clean, by = "country")
+```
+
+```{r}
+summary(final_df)
+
+```
+
+## Description
+I created a merged, final dataset to use for analysis with cleaned and standardized columns (contains 170 countries and 4 variables). Each row represents a single country. The dataset was constructed by merging three country-level datasets sourced from WHO-based HIV/AIDS indicators available on Kaggle. All variables are continuous numerical estimates, and represent median values reported in the original datasets. The variables included in the final dataset are:
+- HIV/AIDS deaths (deaths)
+- Number of people living with HIV (hiv_population)
+- ART coverage among people living with HIV (art_coverage)
+
+
+
+
+
+
+
+
+
+
+
+
