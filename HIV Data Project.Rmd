@@ -56,6 +56,10 @@ final_df <- deaths_clean |>
 ```
 
 ```{r}
+write_csv(final_df, "Data/final_df.csv")
+```
+
+```{r}
 glimpse(final_df)
 ```
 
@@ -64,6 +68,9 @@ I created a merged, final dataset to use for analysis with cleaned and standardi
 - HIV/AIDS deaths (deaths)
 - Number of people living with HIV (hiv_population)
 - ART coverage among people living with HIV (art_coverage)
+
+
+
 
 ```{r}
 colSums(is.na(final_df))
@@ -77,16 +84,59 @@ colMeans(is.na(final_df))
 The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, ~21.8%), number of people living with HIV (32 missing, ~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed, just be wary of it and decide what to do with it in the next stages (if anything).
 
 
-```{r}
 
+
+
+```{r}
+final_df |> 
+  arrange(desc(deaths)) |> 
+  slice(1:10)
+```
+## Description
+Shows top 10 countries with the most HIV/AIDS deaths.
+
+```{r}
+final_df |> 
+  filter(!is.na(deaths)) |>
+  arrange(deaths) |>
+  slice(1:10)
 ```
 
+## Description
+Shows top 10 countries with the least HIV/AIDS deaths.
 
 
 
 
+```{r}
+ggplot(final_df, aes(x = deaths)) +
+  geom_histogram(bins = 30) +
+  labs(title = "Distribution of HIV/AIDS Deaths", x = "Deaths", y = "Count of Countries")
+```
+## Description
+Shows the distribution of deaths across countries.
 
 
 
 
+```{r}
+
+ggplot(final_df, aes(x = art_coverage)) +
+  geom_histogram(bins = 30) +
+  labs(title = "Distribution of ART Coverage", x = "ART Coverage (%)", y = "Count of Countries")
+
+```
+## Description
+Shows the distribution of treatment access (ART coverage %) across countries.
+
+
+
+
+```{r}
+ggplot(final_df, aes(x = art_coverage, y = deaths)) +
+  geom_point() +
+  scale_y_log10()
+```
+## Description
+Shows the relationship between ART coverage (%) and HIV/AIDS deaths across countries, where each point represents a country. Note that I used log scaling for the y-axis to account for scaling issues and compression of the graph.
 
