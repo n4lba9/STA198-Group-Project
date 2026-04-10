@@ -56,8 +56,7 @@ final_df <- deaths_clean |>
 ```
 
 ```{r}
-summary(final_df)
-
+glimpse(final_df)
 ```
 
 ## Description
@@ -66,7 +65,21 @@ I created a merged, final dataset to use for analysis with cleaned and standardi
 - Number of people living with HIV (hiv_population)
 - ART coverage among people living with HIV (art_coverage)
 
+```{r}
+colSums(is.na(final_df))
 
+```
+```{r}
+colMeans(is.na(final_df))
+```
+
+## Description
+The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, ~21.8%), number of people living with HIV (32 missing, ~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed, just be wary of it and decide what to do with it in the next stages (if anything).
+
+
+```{r}
+
+```
 
 
 
