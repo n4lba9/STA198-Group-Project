@@ -1,6 +1,6 @@
 ---
 title: "HIV Analysis"
-author: "STA198 Team"
+author: "STA198 Team: Natalie, Ella, Jessica, Ali"
 date: "2026-04-10"
 output: pdf_document
 ---
