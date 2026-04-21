@@ -140,3 +140,55 @@ ggplot(final_df, aes(x = art_coverage, y = deaths)) +
 ## Description
 Shows the relationship between ART coverage (%) and HIV/AIDS deaths across countries, where each point represents a country. Note that I used log scaling for the y-axis to account for scaling issues and compression of the graph.
 
+## Model Building
+
+To examine the relationship between ART coverage and HIV/AIDS deaths, I conducted a correlation analysis and multiple linear regression models. I first tested the direct association between ART covergae and deaths, then included the number of people living with HIV as a control variable.
+
+## Correlational Test
+
+```{r}
+cor(final_df$art_coverage, final_df$deaths, use = "complete.obs")
+```
+
+## Statistical Analysis:
+The correlation between ART coverage and HIV/AIDS was very weak (r = 0.023), indicating little to no linear relationship when examined alone. However, this result may be misleading because it does not account for differences in the number of people living with HIV across countries, which can strongly influence death counts. This means that a controlled regression analysis should be conducted.
+
+## Simple regression model
+
+```{r}
+model1 <- lm(deaths ~ art_coverage, data = final_df)
+summary(model1)
+```
+
+
+## Statistical Analysis:
+A simple linear regression was conducted to examine the relationship between ART coverage and HIV/AIDS deaths. The results showed no significant relationship between ART coverage and deaths (beta = 12.07, p = 0.794). Additionally, the model explained virtually none of the variation in deaths (R^2 = 0.0005), indicating that ART coverage alone is not a meaningful predictor of HIV/AIDS mortality. This suggests that other factors, such as the size of the HIV-positive population, may play a more important role.
+
+## Controlled regression model
+
+```{r}
+model2 <- lm(deaths ~ art_coverage + hiv_population, data = final_df)
+summary(model2)
+```
+
+## Statistical Analysis:
+
+A multiple linear regression model was used to examine the relationship between ART coverage and HIV/AIDS deaths while controlling for the number of poeple living with HIV. The results showed that ART coverage had a negative association with deaths (beta = -40.55, p = 0.083), suggesting that higher ART coverage is associated with fewer HIV/AIDS deaths. Although this relationship was not statistically significant at the 0.05 level, it indicates a meaningful downward trend.
+
+In contrast, the number of people living with HIV was a highly significant predictor of deaths (beta = 0.01208, p = 2 * 10^-16), indicating that countries with larger HIV-positive populations experience substantially more deaths.
+
+The model overall demonstrated strong explanatory power (R^2 = 0.753), meaning that approximately 75% of the variation in HIV/AIDS deaths across countries is explained by these variables.
+
+All in all, while ART coverage alone did not appear to influence deaths in the simple model, the controlled regression suggests that increased ART coverage is associated with reduced HIV/AIDS mortality when accounting for differences in HIV pop. size. This supports the hypotehsis that expanding access to antiretroviral therapy may help reduce HIV-related deaths globally.
+
+## Log model
+
+```{r}
+model3 <- lm(log(deaths) ~ art_coverage + log(hiv_population), data = final_df)
+summary(model3)
+```
+
+## Statistical Analysis:
+
+A log-transformed multiple regression model was used to bettwe account for skewness in the data and examine the relationsip between ART coverage and HIV/AIDS deaths. The results showed...(Ella)
+
