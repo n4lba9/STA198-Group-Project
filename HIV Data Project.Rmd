@@ -192,3 +192,4 @@ summary(model3)
 
 A log-transformed multiple regression model was used to better account for skewness in the data and examine the relationship between ART coverage and HIV/AIDS deaths. The results showed...(Ella)
 
+k
