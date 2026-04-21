@@ -7,11 +7,15 @@ output:
     latex_engine: xelatex
 ---
 
-```{r}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 rm(list = ls())
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(janitor)
 library(scales)
@@ -21,7 +25,7 @@ hiv <- read_csv("Data/no_of_people_living_with_hiv_by_country_clean.csv")
 art <- read_csv("Data/art_coverage_by_country_clean.csv")
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 deaths_clean <- deaths |>
   clean_names() |>
   group_by(country) |>
@@ -31,7 +35,7 @@ deaths_clean <- deaths |>
   )
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 hiv_clean <- hiv |>
   clean_names() |>
   group_by(country) |>
@@ -41,7 +45,7 @@ hiv_clean <- hiv |>
   )
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 art_clean <- art |>
   clean_names() |>
   select(
@@ -50,17 +54,17 @@ art_clean <- art |>
   )
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 final_df <- deaths_clean |>
   inner_join(hiv_clean, by = "country") |>
   inner_join(art_clean, by = "country")
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 write_csv(final_df, "Data/final_df.csv")
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 glimpse(final_df)
 ```
 
@@ -68,11 +72,11 @@ glimpse(final_df)
 
 I created a merged, final dataset to use for analysis with cleaned and standardized columns (contains 170 countries and 4 variables). Each row represents a single country. The dataset was constructed by merging three country-level datasets sourced from WHO-based HIV/AIDS indicators available on Kaggle. All variables are continuous numerical estimates, and represent median values reported in the original datasets. The variables included in the final dataset are: - HIV/AIDS deaths (deaths) - Number of people living with HIV (hiv_population) - ART coverage among people living with HIV (art_coverage)
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 colSums(is.na(final_df))
 ```
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 colMeans(is.na(final_df))
 ```
 
@@ -80,7 +84,7 @@ colMeans(is.na(final_df))
 
 The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, \~21.8%), number of people living with HIV (32 missing, \~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed, just be wary of it and decide what to do with it in the next stages (if anything).
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 final_df |> 
   arrange(desc(deaths)) |> 
   slice(1:10)
@@ -90,7 +94,7 @@ final_df |>
 
 Shows top 10 countries with the most HIV/AIDS deaths.
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 final_df |> 
   filter(!is.na(deaths)) |>
   arrange(deaths) |>
@@ -101,7 +105,7 @@ final_df |>
 
 Shows top 10 countries with the least HIV/AIDS deaths.
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = deaths)) +
   geom_histogram(bins = 30, fill = "#2E86AB", color = "white") +
   scale_x_continuous(labels = label_comma()) +
@@ -117,7 +121,7 @@ ggplot(final_df, aes(x = deaths)) +
 
 Shows the distribution of deaths across countries.
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = art_coverage)) +
   geom_histogram(bins = 30, fill = "#2E86AB", color = "white") +
   labs(
@@ -132,7 +136,7 @@ ggplot(final_df, aes(x = art_coverage)) +
 
 Shows the distribution of treatment access (ART coverage %) across countries.
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = art_coverage, y = deaths)) +
   geom_point(color = "#2E86AB") +
   scale_y_log10(labels = label_comma()) +
@@ -209,7 +213,7 @@ log(HIV population size) was also highly significant ($\beta$ = 0.800, p < 2e-16
 
 ## Graphs and Results
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(broom)
 library(scales)
@@ -227,7 +231,7 @@ model3 <- lm(log(deaths) ~ art_coverage + log(hiv_population),
 
 ## Scatterplot of ART coverage vs. log(deaths) with regression line and confidence band 
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df_clean, aes(x = art_coverage, y = log(deaths))) +
   geom_point(color = "#2E86AB") +
   geom_smooth(method = lm, se = TRUE, color = "#E84855") +
@@ -242,7 +246,7 @@ Figure 1 displays the relationship between ART coverage and log(HIV/AIDS deaths)
 
 ## Coefficient plot comparing the ART coverage estimate across all three models with 95% CI bars
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 m1_tidy <- tidy(model1, conf.int = TRUE) |> mutate(model = "Model 1\nSimple OLS")
 m2_tidy <- tidy(model2, conf.int = TRUE) |> mutate(model = "Model 2\nControlled OLS")
 m3_tidy <- tidy(model3, conf.int = TRUE) |> mutate(model = "Model 3\nLog-Log")
@@ -266,7 +270,7 @@ Figure 2 compares the ART coverage coefficient estimate across all three model s
 
 ## Residuals vs. Fitted for model3
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 augment(model3) |>
   ggplot(aes(x = .fitted, y = .resid)) +
   geom_point(color = "#2E86AB") +
@@ -282,7 +286,7 @@ Figure 3 shows residuals scattered approximately randomly around zero with no st
 
 ## Histogram of Residuals for model3
 
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 augment(model3) |>
   ggplot(aes(x = .resid)) +
   geom_histogram(bins = 25, fill = "#2E86AB", color = "white") +
