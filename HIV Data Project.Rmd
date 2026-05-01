@@ -25,6 +25,15 @@ hiv <- read_csv("Data/no_of_people_living_with_hiv_by_country_clean.csv")
 art <- read_csv("Data/art_coverage_by_country_clean.csv")
 ```
 
+## Introduction 
+HIV/AIDS remains one of the most significant global public health challenges, affecting millions of individuals worldwide and continuing to place a substantial burden on healthcare systems. According to the World Health Organization, approximately 39 million people are currently living with HIV globally, and HIV-related illness continue to account for hundreds of thousands of deaths each year (World Health Organization, 2023). Despite major advances in treatment and prevention, the burden of HIV/AIDS is not evenly distributed across countries, with some regions experiencing substantially higher mortality rates than others. HIV/AIDS outcomes at a global scale are closely linked to access to antiretroviral therapy (ART) and other structural factors that vary across countries. 
+
+The development and expansion of ART has been one of the most important advancements in reducing HIV/AIDS mortality. ART suppresses the replication of the virus, allowing individuals living with HIV to maintain healthier immune systems and significantly lowering the risk of progression to AIDS and death (World Health Organization, 2023). As a result, increasing access to ART has become a central focus of global health initiatives, but ART varies widely across countries due to differences in healthcare infrastructure, economic resources, and public health policy. Due to this variation, it is important to understand whether higher ART coverage is actually associated with lower HIV/AIDS death counts when comparing countries. In addition, countries with larger populations of people living with HIV are naturally expected to have higher numbers of deaths, regardless of treatment coverage. This makes it necessary to account for population size when evaluating the relationship between ART coverage and mortality. HIV/AIDS death counts are also highly skewed across countries, with a small number of countries contributing disproportionately large values. These characteristics demonstrate the need for both adjusted models and transformations to properly capture the relationship. 
+
+In this study, we examine the association between ART coverage and HIV/AIDS deaths across countries using country-level data. We explore both unadjusted and adjusted relationships, incorporating the number of individuals living with HIV as a control variable and applying log transformations to better capture the relationship in the data. This leads to our primary research question:
+
+**Is higher antiretroviral therapy (ART) coverage associated with lower HIV/AIDS death counts across countries?**
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 deaths_clean <- deaths |>
   clean_names() |>
