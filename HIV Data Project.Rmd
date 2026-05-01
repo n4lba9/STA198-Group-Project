@@ -270,3 +270,17 @@ augment(model3) |>
   theme_minimal()
 ```
 Figure 4 shows the distribution of residuals from Model 3. The approximately bell-shaped, symmetric distribution centered near zero suggests the normality assumption is reasonably met, supporting the validity of the model's inference.
+
+# Discussion 
+This analysis examined the relationship between ART coverage and HIV/AIDS deaths across countries using multiple statistical models. The results indicate that the relationship between ART coverage and mortality depends strongly on model specification. In the initial correlation and simple regression models, ART coverage showed little to no association with HIV/AIDS deaths. However, these results are likely misleading because they do not account for differences in the size of the HIV-positive population across countries. 
+
+After controlling for the number of people living with HIV, ART coverage showed a negative association with HIV/AIDS deaths, suggesting that higher treatment coverage is associated with fewer deaths. Although this relationship was not statistically significant at the 0.05 level in the multiple linear regression model, the direction and magnitude of the effect indicate a meaningful downward trend. The log-transformed model provided the strongest evidence of a relationship, showing a statistically significant negative association between ART coverage and HIV/AIDS deaths after adjusting for HIV population size. Increases in ART coverage are associated with proportional reductions in HIV/AIDS mortality. The improved model fit and stronger statistical significance indicate that the log transformation more appropriately captures the underlying structure of the data. 
+
+Despite these findings, several limitations should be considered. The analysis is based on observational, country-level data, which limits the ability to make casual conclusions about the relationship between ART coverage and HIV/AIDS deaths. The missing data across key variables may introduce bias and reduce the accuracy of estimates. The models also do not account for other potentially important factors, such as healthcare infrasructure, economic conditions, or access to prevention and testing services, which may influence HIV/AIDS outcomes across countries. Future work could improve this analysis by incorporating additional country-level variables and using longitudinal data to examine how changes in ART coverage affect mortality over time. These improvements would provide a more comprehensive understanding of the factors driving HIV/AIDS outcomes and strengthen the conclusions of the analysis. 
+
+# Conclusion
+In conclusion, this study examined the relationship between ART coverage and HIV/AIDS deaths across countries using correlation analysis and multiple regression models. While initial analyses suggested little to no association between ART coverage and mortality, more refined models that accounted for HIV population size and data skewness revealed a significant negative relationship. In particular, the log-transformed model provided the strongest evidence that higher ART coverage is associated with lower HIV/AIDS deaths. These findings demonstrate the importance of expanding access to antiretroviral therapy as a key strategy for reducing HIV/AIDS mortailty at a global scale. 
+
+# References 
+Srividhya R. (n.d.). HIV AIDS – Data Analysis and Visualization. GitHub. https://github.com/srivi15/HIV-AIDS---Data-Analysis
+World Health Organization. (2023). HIV/AIDS. https://www.who.int/news-room/fact-sheets/detail/hiv-aids
