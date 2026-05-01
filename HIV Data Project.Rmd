@@ -84,7 +84,7 @@ write_csv(final_df, "Data/final_df.csv")
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 glimpse(final_df)
 ```
-A merged, final dataset was used for analysis with cleaned and standardized columns (contains 170 countries and 4 variables). Each row represents a single country. The dataset was constructed by merging three country-level datasets sourced from WHO-based HIV/AIDS indicators available on Kaggle. All variables are continuous numerical estimates, and represent median values reported in the original datasets. The variables included in the final dataset are: - HIV/AIDS deaths (deaths) - Number of people living with HIV (hiv_population) - ART coverage among people living with HIV (art_coverage)
+A final merged dataset was used for analysis, consisting of 170 countries and four variables, with each observation representing a single country. The dataset was constructed by combining three country-level datasets containing HIV/AIDS indicators sourced from WHO-based data available on Kaggle. All variables are continuous numerical estimates representing median values reported in the original datasets. The primary variables included in the analysis are HIV/AIDS deaths (deaths), the number of people living with HIV (hiv_population), and antiretroviral therapy coverage among people living with HIV (art_coverage). 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 colSums(is.na(final_df))
@@ -93,14 +93,14 @@ colSums(is.na(final_df))
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 colMeans(is.na(final_df))
 ```
-The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, \~21.8%), number of people living with HIV (32 missing, \~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed, just be wary of it and decide what to do with it in the next stages (if anything).
+The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, \~21.8%), the number of people living with HIV (32 missing, \~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed and were addressed as needed subsequent stages of the analysis. 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 final_df |> 
   arrange(desc(deaths)) |> 
   slice(1:10)
 ```
-Shows top 10 countries with the most HIV/AIDS deaths.
+The following table shows the top 10 countries with the highest numberx HIV/AIDS deaths.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 final_df |> 
@@ -108,7 +108,7 @@ final_df |>
   arrange(deaths) |>
   slice(1:10)
 ```
-Shows top 10 countries with the least HIV/AIDS deaths.
+The following table shows the top 10 countries with the lowest number of HIV/AIDS deaths.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = deaths)) +
@@ -121,7 +121,7 @@ ggplot(final_df, aes(x = deaths)) +
   ) +
   theme_minimal()
 ```
-Shows the distribution of deaths across countries.
+The following plot shows the distribution of HIV/AIDS deaths across countries.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = art_coverage)) +
@@ -133,7 +133,7 @@ ggplot(final_df, aes(x = art_coverage)) +
   ) +
   theme_minimal()
 ```
-Shows the distribution of treatment access (ART coverage %) across countries.
+The following plot shows the distribution of ART coverage among people living with HIV across countries. 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggplot(final_df, aes(x = art_coverage, y = deaths)) +
@@ -146,7 +146,7 @@ ggplot(final_df, aes(x = art_coverage, y = deaths)) +
   ) +
   theme_minimal()
 ```
-Shows the relationship between ART coverage (%) and HIV/AIDS deaths across countries, where each point represents a country. Note that we used log scaling for the y-axis to account for scaling issues and compression of the graph.
+The following plot shows the relationship between ART coverage (%) and HIV/AIDS deaths across countries, where each point represents a country. The y-axis is shown on a log scale to account for differences in magnitude and improve visualization. 
 
 # Methods 
 To examine the relationship between ART coverage and HIV/AIDS deaths across countries, we conducted a series of statistical analyses. We begin with exploratory data analysis and a correlation test to assess the unadjusted relationship between ART coverage and deaths. We then fit a sequence of regression models, including a simple linear regression, a multiple linear regression controlling for the number of people living with HIV, and a log-transformed model to account for skewness in the data. Each model is presented and interpreted in the sections below. 
@@ -158,7 +158,7 @@ The correlation analysis provides an initial measure of strength and direction o
 ```{r}
 cor(final_df$art_coverage, final_df$deaths, use = "complete.obs")
 ```
-The correlation between ART coverage and HIV/AIDS was very weak (r = 0.023), indicating little to no linear relationship when examined alone. However, this result may be misleading because it does not account for differences in the number of people living with HIV across countries, which can strongly influence death counts. This means that a controlled regression analysis should be conducted.
+The correlation between ART coverage and HIV/AIDS was very weak (r = 0.023), indicating little to no linear relationship when examined alone. However, this result may be misleading because it does not account for differences in the number of people living with HIV across countries, which can strongly influence death counts. This suggests that a controlled regression analysis should be conducted.
 
 ## Simple Linear Regression
 ```{r}
