@@ -41,7 +41,6 @@ The dataset used in this analysis was constructed by merging three country-level
 
 Prior to merging, each dataset was cleaned and standardized to ensure consistency across variables. Variable names were reformatted, and the data were aggregated at the country level. For both the HIV/AIDS deaths and HIV population datasets, median estimates were used to represent each country. The ART dataset was also cleaned to only the relevant variable measuring the percentage of individuals living with HIV who are receiving treatment. The datasets were then merged using the country variable as the key, resulting in a final dataset containing 170 countries, where each observation corresponds to a single country. The primary variables included in the analysis are HIV/AIDS deaths, the number of individuals living with HIV, and ART coverage, all of which are continuous numerical variables representing country-level estimates. The dataset contains some missing values in these variables, which are likely due to incomplete reporting across countries, which is a common issue in global health data. Rather than imputing missing values, the analysis proceeds using available observations, with observations containing missing values excluded when necessary.
 
-# Exploratory Data Analysis 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 deaths_clean <- deaths |>
   clean_names() |>
@@ -81,9 +80,6 @@ final_df <- deaths_clean |>
 write_csv(final_df, "Data/final_df.csv")
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-glimpse(final_df)
-```
 A final merged dataset was used for analysis, consisting of 170 countries and four variables, with each observation representing a single country. The dataset was constructed by combining three country-level datasets containing HIV/AIDS indicators sourced from WHO-based data available on Kaggle. All variables are continuous numerical estimates representing median values reported in the original datasets. The primary variables included in the analysis are HIV/AIDS deaths (deaths), the number of people living with HIV (hiv_population), and antiretroviral therapy coverage among people living with HIV (art_coverage). 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
@@ -95,61 +91,8 @@ colMeans(is.na(final_df))
 ```
 The dataset contains missing values across all three main variables: HIV/AIDS deaths (37 missing, \~21.8%), the number of people living with HIV (32 missing, \~18.8%), and ART coverage (34 missing, 20%); no missing data for countries. This is most likely due to incomplete reporting in certain countries within the original WHO-based dataset (real-world data is often incomplete). Missing data was not cleaned or removed and were addressed as needed subsequent stages of the analysis. 
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-final_df |> 
-  arrange(desc(deaths)) |> 
-  slice(1:10)
-```
-The following table shows the top 10 countries with the highest numberx HIV/AIDS deaths.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-final_df |> 
-  filter(!is.na(deaths)) |>
-  arrange(deaths) |>
-  slice(1:10)
-```
-The following table shows the top 10 countries with the lowest number of HIV/AIDS deaths.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(final_df, aes(x = deaths)) +
-  geom_histogram(bins = 30, fill = "#2E86AB", color = "white") +
-  scale_x_continuous(labels = label_comma()) +
-  labs(
-    title = "Distribution of HIV/AIDS Deaths",
-    x = "HIV/AIDS Deaths",
-    y = "Number of Countries"
-  ) +
-  theme_minimal()
-```
-The following plot shows the distribution of HIV/AIDS deaths across countries.
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(final_df, aes(x = art_coverage)) +
-  geom_histogram(bins = 30, fill = "#2E86AB", color = "white") +
-  labs(
-    title = "Distribution of ART Coverage",
-    x = "ART Coverage Among People Living with HIV (%)",
-    y = "Number of Countries"
-  ) +
-  theme_minimal()
-```
-The following plot shows the distribution of ART coverage among people living with HIV across countries. 
-
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(final_df, aes(x = art_coverage, y = deaths)) +
-  geom_point(color = "#2E86AB") +
-  scale_y_log10(labels = label_comma()) +
-  labs(
-    title = "ART Coverage vs. HIV/AIDS Deaths",
-    x = "ART Coverage Among People Living with HIV (%)",
-    y = "HIV/AIDS Deaths (log scale)"
-  ) +
-  theme_minimal()
-```
-The following plot shows the relationship between ART coverage (%) and HIV/AIDS deaths across countries, where each point represents a country. The y-axis is shown on a log scale to account for differences in magnitude and improve visualization. 
-
 # Methods 
-To examine the relationship between ART coverage and HIV/AIDS deaths across countries, we conducted a series of statistical analyses. We begin with exploratory data analysis and a correlation test to assess the unadjusted relationship between ART coverage and deaths. We then fit a sequence of regression models, including a simple linear regression, a multiple linear regression controlling for the number of people living with HIV, and a log-transformed model to account for skewness in the data. Each model is presented and interpreted in the sections below. 
+To examine the relationship between ART coverage and HIV/AIDS deaths across countries, we conducted a series of statistical analyses. We begin with a correlation test to assess the unadjusted relationship between ART coverage and deaths. We then fit a sequence of regression models, including a simple linear regression, a multiple linear regression controlling for the number of people living with HIV, and a log-transformed model to account for skewness in the data. Each model is presented and interpreted in the sections below. 
 
 The correlation analysis provides an initial measure of strength and direction of the linear association between ART coverage and HIV/AIDS deaths, but it does not account for differences across countries. To address this, a simple linear regression model was first fit with HIV/AIDS deaths as the response variable and ART coverage as the predictor. A multiple linear regression model was then used to include both ART coverage and the number of individuals living with HIV, allowing us to control for differences in population size across countries. Finally, because HIV/AIDS death counts are highly skewed, a log-transformed regression model was used, in which the natural logarithm of deaths and HIV population were included. Model assumptions were assessed using diagnostic plots, including residuals versus fitted values and histograms of residuals, to evaluate linearity, constant variance, and normality. 
 
