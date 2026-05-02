@@ -10,7 +10,7 @@ output:
     df_print: paged
 ---
 
-```{r}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 options(digits = 3)
 ```
@@ -168,7 +168,7 @@ tidy(model1) |>
   select(Term = term, Estimate = estimate, `Std. Error` = std.error, `p-value` = p.value) |>
   kable(caption = paste("Simple OLS. R-squared =", round(summary(model1)$r.squared, 4), "| N =", nobs(model1)))
 ```
-A simple linear regression was conducted to examine the relationship between ART coverage and HIV/AIDS deaths. The results showed no significant relationship between ART coverage and deaths (beta = 12.07, p = 0.794). Additionally, the model explained virtually none of the variation in deaths (R\^2 = 0.0005), indicating that ART coverage alone is not a meaningful predictor of HIV/AIDS mortality. This suggests that other factors, such as the size of the HIV-positive population, may play a more important role.
+A simple linear regression was conducted to examine the relationship between ART coverage and HIV/AIDS deaths. The results showed no significant relationship between ART coverage and deaths (beta = 12.07, p = 0.794). Additionally, the model explained virtually none of the variation in deaths (R² = 0.0005), indicating that ART coverage alone is not a meaningful predictor of HIV/AIDS mortality. This suggests that other factors, such as the size of the HIV-positive population, may play a more important role.
 
 ## Multiple Linear Regression
 ```{r, echo=FALSE}
