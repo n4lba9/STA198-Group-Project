@@ -152,7 +152,7 @@ model3 <- lm(log(deaths) ~ art_coverage + log(hiv_population),
              data = final_df_clean)
 ```
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4, fig.height=3}
 ggplot(final_df_clean, aes(x = art_coverage, y = log(deaths))) +
   geom_point(color = "#2E86AB") +
   geom_smooth(method = lm, se = TRUE, color = "#E84855") +
@@ -163,9 +163,10 @@ ggplot(final_df_clean, aes(x = art_coverage, y = log(deaths))) +
   ) +
   theme_minimal()
 ```
+
 Figure 1 displays the relationship between ART coverage and log(HIV/AIDS deaths) across countries, with a fitted regression line from Model 3 and 95% confidence band. The negative slope visually shows that higher ART coverage is associated with lower HIV/AIDS mortality, while controlling for HIV population size.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4, fig.height=3}
 m1_tidy <- tidy(model1, conf.int = TRUE) |> mutate(model = "Model 1\nSimple OLS")
 m2_tidy <- tidy(model2, conf.int = TRUE) |> mutate(model = "Model 2\nControlled OLS")
 m3_tidy <- tidy(model3, conf.int = TRUE) |> mutate(model = "Model 3\nLog-Log")
@@ -185,9 +186,10 @@ bind_rows(m1_tidy, m2_tidy, m3_tidy) |>
   theme_minimal() +
   theme(legend.position = "none")
 ```
+
 Figure 2 compares the ART coverage coefficient estimate across all three model specifications with 95% confidence intervals. In Models 1 and 2, the confidence interval crosses zero, indicating no statistically significant effect. Only in Model 3, after log-transforming both the outcome and HIV population size, does the estimate become significant, supporting the use of the log-log specification.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4, fig.height=3}
 augment(model3) |>
   ggplot(aes(x = .fitted, y = .resid)) +
   geom_point(color = "#2E86AB") +
@@ -199,9 +201,10 @@ augment(model3) |>
   ) +
   theme_minimal()
 ```
+
 Figure 3 shows residuals scattered approximately randomly around zero with no strong systematic pattern, suggesting the linearity and constant variance assumptions of Model 3 are reasonably satisfied.
 
-```{r, echo=FALSE, warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.width=4, fig.height=3}
 augment(model3) |>
   ggplot(aes(x = .resid)) +
   geom_histogram(bins = 25, fill = "#2E86AB", color = "white") +
@@ -212,6 +215,7 @@ augment(model3) |>
   ) +
   theme_minimal()
 ```
+
 Figure 4 shows the distribution of residuals from Model 3. The approximately bell-shaped, symmetric distribution centered near zero suggests the normality assumption is reasonably met, supporting the validity of the model's inference.
 
 # Discussion 
